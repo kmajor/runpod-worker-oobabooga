@@ -24,7 +24,7 @@ bash -c 'for req in extensions/*/requirements.txt ; do pip3 install -r "$req" ; 
 ```
 7. Install the Serverless dependencies:
 ```bash
-pip3 install huggingface_hub runpod>=0.10.0
+pip3 install huggingface_hub runpod
 ```
 8. Download a model, for example `TheBloke/Synthia-70B-v1.1-GPTQ`:
 ```bash

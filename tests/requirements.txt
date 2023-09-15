@@ -1,3 +1,2 @@
 requests
 python-dotenv
-runpod==0.10.0
