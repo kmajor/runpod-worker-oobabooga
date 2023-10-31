@@ -8,10 +8,10 @@ fi
 MODEL="${MODEL//\//_}"
 echo "Model: ${MODEL}"
 
-if [ -d "/runpod-volume/text-generation-webui/models/${MODEL}" ]; then
+if [ -d "/workspace/text-generation-webui/models/${MODEL}" ]; then
   echo "Starting Oobabooga Text Generation Server"
-  cd /runpod-volume/text-generation-webui
-  mkdir -p /runpod-volume/logs
+  cd /workspace/text-generation-webui
+  mkdir -p /workspace/logs
   nohup python3 server.py \
     --listen \
     --api \
@@ -19,7 +19,7 @@ if [ -d "/runpod-volume/text-generation-webui/models/${MODEL}" ]; then
     --model ${MODEL} \
     --listen-port 3000 \
     --api-blocking-port 5000 \
-    --api-streaming-port 5005 &> /runpod-volume/logs/textgen.log &
+    --api-streaming-port 5005 &> /workspace/logs/textgen.log &
 
   echo "Starting RunPod Handler"
   export PYTHONUNBUFFERED=1
