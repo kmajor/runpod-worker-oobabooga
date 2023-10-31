@@ -7,7 +7,7 @@ fi
 # Replace slashes with underscores
 MODEL="${MODEL//\//_}"
 
-if [ -d "/runpod-volumetext-generation-webui/models/${MODEL}" ]; then
+if [ -d "/runpod-volume/text-generation-webui/models/${MODEL}" ]; then
   echo "Starting Oobabooga Text Generation Server"
   cd /runpod-volume/text-generation-webui
   mkdir -p /runpod-volume/logs

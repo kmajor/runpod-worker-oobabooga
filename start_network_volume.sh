@@ -13,7 +13,7 @@ if [[ ! -L /workspace ]]; then
   ln -s /runpod-volume /workspace
 fi
 
-if [ -d "/runpod-volumetext-generation-webui/models/${MODEL}" ]; then
+if [ -d "/runpod-volume/text-generation-webui/models/${MODEL}" ]; then
   echo "Starting Oobabooga Text Generation Server"
   cd /runpod-volume/text-generation-webui
   source /workspace/venv/bin/activate
