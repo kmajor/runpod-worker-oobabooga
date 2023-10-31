@@ -1,5 +1,4 @@
 import time
-import json
 import requests
 from dotenv import dotenv_values
 
@@ -73,27 +72,22 @@ def post_request(payload, runtype='run'):
                         if job_status == 'IN_QUEUE' or job_status == 'IN_PROGRESS':
                             print(f'RunPod request {request_id} is {job_status}, sleeping for 5 seconds...')
                             time.sleep(5)
+                        elif job_status == 'CANCELLED':
+                            print(f'RunPod request {request_id} cancelled')
+                            return handle_response(resp_json, timer)
                         elif job_status == 'FAILED':
-                            request_in_queue = False
                             print(f'RunPod request {request_id} failed')
-                            print(json.dumps(resp_json, indent=4, default=str))
+                            return handle_response(resp_json, timer)
                         elif job_status == 'COMPLETED':
-                            request_in_queue = False
                             print(f'RunPod request {request_id} completed')
                             return handle_response(resp_json, timer)
                         elif job_status == 'TIMED_OUT':
-                            request_in_queue = False
                             print(f'ERROR: RunPod request {request_id} timed out')
+                            return handle_response(resp_json, timer)
                         else:
-                            request_in_queue = False
                             print(f'ERROR: Invalid status response from RunPod status endpoint')
-                            print(json.dumps(resp_json, indent=4, default=str))
-            elif job_status == 'COMPLETED' \
-                    and 'output' in resp_json \
-                    and 'status' in resp_json['output'] \
-                    and resp_json['output']['status'] == 'error':
-                print(f'ERROR: {resp_json["output"]["message"]}')
+                            return handle_response(resp_json, timer)
             else:
-                print(json.dumps(resp_json, indent=4, default=str))
+                return handle_response(resp_json, timer)
     else:
         print(f'ERROR: {r.content}')
