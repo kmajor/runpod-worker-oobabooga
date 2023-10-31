@@ -8,7 +8,7 @@ inside the Docker image.
 1. [Create a RunPod Account](https://runpod.io?ref=2xxro4sy).
 2. Create a [RunPod Network Volume](https://www.runpod.io/console/user/storage).
 3. Attach the Network Volume to a Secure Cloud [GPU pod](https://www.runpod.io/console/gpu-secure-cloud).
-4. Select a light-weight template such as RunPod Pytorch.
+4. Select a light-weight template such as RunPod Pytorch 2.
 5. Deploy the GPU Cloud pod.
 6. Once the pod is up, open a Terminal and install the required
    dependencies:
@@ -16,9 +16,11 @@ inside the Docker image.
 cd /workspace
 git clone https://github.com/oobabooga/text-generation-webui.git
 cd text-generation-webui
+git checkout cb26163a209d6272ed14da83782f71bae4681d75
 python3 -m venv /workspace/venv
 source /workspace/venv/bin/activate
-pip3 install --no-cache-dir torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu118
+pip3 install --no-cache-dir torch==2.0.1 torchvision torchaudio --index-url https://download.pytorch.org/whl/cu118
+pip3 install --no-cache-dir xformers==0.0.22
 pip3 install -r requirements.txt
 bash -c 'for req in extensions/*/requirements.txt ; do pip3 install -r "$req" ; done'
 ```
@@ -26,7 +28,7 @@ bash -c 'for req in extensions/*/requirements.txt ; do pip3 install -r "$req" ; 
 ```bash
 pip3 install huggingface_hub runpod
 ```
-8. Download a model, for example `TheBloke/Synthia-70B-v1.1-GPTQ`:
+8. Download a model, for example `TheBloke/Synthia-70B-v1.5-GPTQ`:
 ```bash
 cd /workspace/text-generation-webui
 python3 download-model.py TheBloke/Synthia-70B-v1.1-GPTQ \
