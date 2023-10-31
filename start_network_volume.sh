@@ -1,8 +1,11 @@
 #!/usr/bin/env bash
 
 if [ -z "${MODEL+x}" ]; then
-  MODEL="TheBloke_Synthia-70B-v1.5-GPTQ"
+  MODEL="TheBloke/Synthia-34B-v1.2-GPTQ"
 fi
+
+# Replace slashes with underscores
+MODEL="${MODEL//\//_}"
 
 echo "Worker Initiated"
 
