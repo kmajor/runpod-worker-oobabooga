@@ -1,6 +1,8 @@
 #!/usr/bin/env bash
 
-MODEL="TheBloke_Synthia-70B-v1.1-GPTQ"
+if [ -z "${MODEL+x}" ]; then
+  MODEL="TheBloke_Synthia-70B-v1.5-GPTQ"
+fi
 
 echo "Worker Initiated"
 

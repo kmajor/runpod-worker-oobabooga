@@ -1,12 +1,13 @@
 #!/usr/bin/env bash
 
-MODEL="TheBloke_Synthia-70B-v1.1-GPTQ"
+if [ -z "${MODEL+x}" ]; then
+  MODEL="TheBloke_Synthia-70B-v1.5-GPTQ"
+fi
 
 echo "Worker Initiated"
 
 echo "Starting Oobabooga Text Generation Server"
 cd /workspace/text-generation-webui
-source /workspace/text-generation-webui/venv/bin/activate
 mkdir -p /workspace/logs
 nohup python3 server.py \
   --listen \
