@@ -6,6 +6,7 @@ fi
 
 # Replace slashes with underscores
 MODEL="${MODEL//\//_}"
+echo "Model: ${MODEL}"
 
 if [ -d "/runpod-volume/text-generation-webui/models/${MODEL}" ]; then
   echo "Starting Oobabooga Text Generation Server"

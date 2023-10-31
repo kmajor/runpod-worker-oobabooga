@@ -7,6 +7,7 @@ fi
 
 # Replace slashes with underscores
 MODEL="${MODEL//\//_}"
+echo "Model: ${MODEL}"
 
 if [[ ! -L /workspace ]]; then
   echo "Symlinking files from Network Volume"
