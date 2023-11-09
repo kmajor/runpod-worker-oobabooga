@@ -26,6 +26,11 @@ CHAT_SCHEMA = {
             'instruct',
         ]
     },
+    'context': {
+        'type': str,
+        'required': False,
+        'default': 'You are a helpful chat bot.'
+    },
     'character': {
         'type': str,
         'required': False,
@@ -35,6 +40,16 @@ CHAT_SCHEMA = {
         'type': str,
         'required': False,
         'default': 'Vicuna-v1.1'
+    },
+    'name1': {
+        'type': str,
+        'required': False,
+        'default': 'You'
+    },
+    'name2': {
+        'type': str,
+        'required': False,
+        'default': 'You'
     },
     'your_name': {
         'type': str,
@@ -61,7 +76,7 @@ CHAT_SCHEMA = {
         'required': False,
         'default': 1,
     },
-    'chat-instruct_command': {
+    'chat_instruct_command': {
         'type': str,
         'required': False,
         'default': 'Continue the chat dialogue below. Write a single reply for the character "<|character|>".\n\n<|prompt|>'

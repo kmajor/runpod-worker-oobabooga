@@ -164,3 +164,6 @@ checkpoints
 CodeFormer
 test_input.json
 *.jpg
+
+#KEVS Adds
+/models/*

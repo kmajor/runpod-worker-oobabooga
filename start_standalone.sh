@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-MODEL="TheBloke_Synthia-70B-v1.1-GPTQ"
+MODEL="TheBloke/Pygmalion-2-13B-GPTQ"
 
 echo "Worker Initiated"
 
@@ -11,7 +11,6 @@ mkdir -p /workspace/logs
 nohup python3 server.py \
   --listen \
   --api \
-  --loader ExLlama \
   --model ${MODEL} \
   --listen-port 3000 \
   --api-blocking-port 5000 \

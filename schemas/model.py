@@ -12,7 +12,7 @@ MODEL_SCHEMA = {
     'model_name': {
         'type': str,
         'required': False,
-        'default': 'TheBloke_Pygmalion-13B-SuperHOT-8K-GPTQ'
+        'default': 'TheBloke/Pygmalion-2-13B-GPTQ'
     },
     'args': {
         'type': dict,
