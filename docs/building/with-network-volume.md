@@ -8,7 +8,7 @@ inside the Docker image.
 1. [Create a RunPod Account](https://runpod.io?ref=2xxro4sy).
 2. Create a [RunPod Network Volume](https://www.runpod.io/console/user/storage).
 3. Attach the Network Volume to a Secure Cloud [GPU pod](https://www.runpod.io/console/gpu-secure-cloud).
-4. Select a light-weight template such as RunPod Pytorch 2.
+4. Select the RunPod Pytorch 2.1 Template.
 5. Deploy the GPU Cloud pod.
 6. Once the pod is up, open a Terminal and install the required
    dependencies:
@@ -37,8 +37,10 @@ cd /workspace/text-generation-webui
 python3 download-model.py TheBloke/Synthia-34B-v1.2-GPTQ \
   --output /workspace/text-generation-webui/models
 ```
-9. Sign up for a Docker hub account if you don't already have one.
-10. Build the Docker image on your local machine and push to Docker hub:
+9. Everything should now be installed on your Network Volume and it
+   should be safe to terminate the pod.
+10. Sign up for a Docker hub account if you don't already have one.
+11. Build the Docker image on your local machine and push to Docker hub:
 ```bash
 docker build -t dockerhub-username/runpod-worker-oobabooga:1.0.0 -f Dockerfile.Network_Volume .
 docker login
