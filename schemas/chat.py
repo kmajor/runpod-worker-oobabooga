@@ -19,11 +19,10 @@ CHAT_SCHEMA = {
     'mode': {
         'type': str,
         'required': False,
-        'default': 'instruct',
+        'default': 'chat-instruct',
         'constraints': lambda model: model in [
             'chat',
             'chat-instruct',
-            'instruct',
         ]
     },
     'character': {

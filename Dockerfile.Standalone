@@ -1,6 +1,6 @@
-FROM nvidia/cuda:11.8.0-cudnn8-devel-ubuntu22.04
+FROM nvidia/cuda:12.1.1-cudnn8-devel-ubuntu22.04
 
-ARG OOBABOOGA_COMMIT=cb26163a209d6272ed14da83782f71bae4681d75
+ARG OOBABOOGA_COMMIT=2af7e382b121f2eae16dd1f7ace621d31028b319
 ARG MODEL="TheBloke/Synthia-34B-v1.2-GPTQ"
 
 ENV DEBIAN_FRONTEND=noninteractive \
@@ -25,10 +25,13 @@ WORKDIR /workspace
 RUN git clone https://github.com/oobabooga/text-generation-webui && \
     cd text-generation-webui && \
     git checkout ${OOBABOOGA_COMMIT} && \
-    pip3 install --no-cache-dir torch==2.0.1 torchvision torchaudio --index-url https://download.pytorch.org/whl/cu118 && \
-    pip3 install --no-cache-dir xformers==0.0.22 && \
+    pip3 install --no-cache-dir torch==2.1.0 torchvision torchaudio --index-url https://download.pytorch.org/whl/cu121 && \
+    pip3 install --no-cache-dir xformers && \
     pip3 install -r requirements.txt && \
-    bash -c 'for req in extensions/*/requirements.txt ; do pip3 install -r "$req" ; done'
+    bash -c 'for req in extensions/*/requirements.txt ; do pip3 install -r "$req" ; done' && \
+    mkdir -p repositories && \
+    cd repositories && \
+    git clone https://github.com/turboderp/exllama
 
 # Fetch the model
 COPY download_model.py fetch_model.py /

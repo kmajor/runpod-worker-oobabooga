@@ -16,13 +16,16 @@ inside the Docker image.
 cd /workspace
 git clone https://github.com/oobabooga/text-generation-webui.git
 cd text-generation-webui
-git checkout cb26163a209d6272ed14da83782f71bae4681d75
+git checkout 2af7e382b121f2eae16dd1f7ace621d31028b319
 python3 -m venv /workspace/venv
 source /workspace/venv/bin/activate
-pip3 install --no-cache-dir torch==2.0.1 torchvision torchaudio --index-url https://download.pytorch.org/whl/cu118
-pip3 install --no-cache-dir xformers==0.0.22
+pip3 install --no-cache-dir torch==2.1.0 torchvision torchaudio --index-url https://download.pytorch.org/whl/cu121
+pip3 install --no-cache-dir xformers
 pip3 install -r requirements.txt
 bash -c 'for req in extensions/*/requirements.txt ; do pip3 install -r "$req" ; done'
+mkdir -p repositories
+cd repositories
+git clone https://github.com/turboderp/exllama
 ```
 7. Install the Serverless dependencies:
 ```bash
