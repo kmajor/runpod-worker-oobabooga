@@ -4,10 +4,11 @@ from util import post_request
 
 
 def get_response_output(resp_json):
-    if 'output' in resp_json:
-        print(json.dumps(resp_json['output']['result'], indent=4, default=str))
-    else:
-        print(json.dumps(resp_json, indent=4, default=str))
+    if resp_json:
+        if 'output' in resp_json:
+            print(json.dumps(resp_json['output']['result'], indent=4, default=str))
+        else:
+            print(json.dumps(resp_json, indent=4, default=str))
 
 
 if __name__ == '__main__':

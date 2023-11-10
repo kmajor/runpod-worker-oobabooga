@@ -4,16 +4,17 @@ from util import post_request
 
 
 def get_response_output(resp_json):
-    if 'output' in resp_json:
-        result = resp_json['output']['results'][0]['history']
+    if resp_json:
+        if 'output' in resp_json:
+            result = resp_json['output']['results'][0]['history']
 
-        if len(result['visible']):
-            print(result['visible'][-1][1])
+            if len(result['visible']):
+                print(result['visible'][-1][1])
+            else:
+                print('No visible output received from endpoint')
+                print(json.dumps(resp_json, indent=4, default=str))
         else:
-            print('No visible output received from endpoint')
             print(json.dumps(resp_json, indent=4, default=str))
-    else:
-        print(json.dumps(resp_json, indent=4, default=str))
 
 
 if __name__ == '__main__':
