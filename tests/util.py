@@ -2,6 +2,13 @@ import time
 import requests
 from dotenv import dotenv_values
 
+STATUS_IN_QUEUE = 'IN_QUEUE'
+STATUS_IN_PROGRESS = 'IN_PROGRESS'
+STATUS_FAILED = 'FAILED'
+STATUS_CANCELLED = 'CANCELLED'
+STATUS_COMPLETED = 'COMPLETED'
+STATUS_TIMED_OUT = 'TIMED_OUT'
+
 
 class Timer:
     def __init__(self):
@@ -48,10 +55,10 @@ def post_request(payload, runtype='run'):
         if 'output' in resp_json:
             return handle_response(resp_json, timer)
         else:
-            job_status = resp_json['status']
+            job_status = resp_json.get('status', STATUS_FAILED)
             print(f'Job status: {job_status}')
 
-            if job_status == 'IN_QUEUE' or job_status == 'IN_PROGRESS':
+            if job_status == STATUS_IN_QUEUE or job_status == STATUS_IN_PROGRESS:
                 request_id = resp_json['id']
                 request_in_queue = True
 
@@ -69,19 +76,19 @@ def post_request(payload, runtype='run'):
                         resp_json = r.json()
                         job_status = resp_json['status']
 
-                        if job_status == 'IN_QUEUE' or job_status == 'IN_PROGRESS':
+                        if job_status == STATUS_IN_QUEUE or job_status == STATUS_IN_PROGRESS:
                             print(f'RunPod request {request_id} is {job_status}, sleeping for 5 seconds...')
                             time.sleep(5)
-                        elif job_status == 'CANCELLED':
+                        elif job_status == STATUS_CANCELLED:
                             print(f'RunPod request {request_id} cancelled')
                             return handle_response(resp_json, timer)
-                        elif job_status == 'FAILED':
+                        elif job_status == STATUS_FAILED:
                             print(f'RunPod request {request_id} failed')
                             return handle_response(resp_json, timer)
-                        elif job_status == 'COMPLETED':
+                        elif job_status == STATUS_COMPLETED:
                             print(f'RunPod request {request_id} completed')
                             return handle_response(resp_json, timer)
-                        elif job_status == 'TIMED_OUT':
+                        elif job_status == STATUS_TIMED_OUT:
                             print(f'ERROR: RunPod request {request_id} timed out')
                             return handle_response(resp_json, timer)
                         else:

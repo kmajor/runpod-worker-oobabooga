@@ -11,7 +11,7 @@ from schemas.generate import GENERATE_SCHEMA
 from schemas.token_count import TOKEN_COUNT_SCHEMA
 from schemas.model import MODEL_SCHEMA
 
-BASE_URL = 'http://127.0.0.1:5000/api/v1'
+BASE_URI = 'http://127.0.0.1:5000/api/v1'
 TIMEOUT = 600
 
 VALIDATION_SCHEMAS = {
@@ -50,14 +50,14 @@ def wait_for_service(url):
 
 def send_get_request(endpoint):
     return session.get(
-        url=f'{BASE_URL}/{endpoint}',
+        url=f'{BASE_URI}/{endpoint}',
         timeout=TIMEOUT
     )
 
 
 def send_post_request(endpoint, payload):
     return session.post(
-        url=f'{BASE_URL}/{endpoint}',
+        url=f'{BASE_URI}/{endpoint}',
         json=payload,
         timeout=TIMEOUT
     )
@@ -107,14 +107,14 @@ def handler(event):
 
     if 'errors' in validated_api:
         return {
-            'error': validated_api['errors']
+            'error': ','.join(validated_api['errors'])
         }
 
     endpoint, method, validated_input = validate_payload(event)
 
     if 'errors' in validated_input:
         return {
-            'error': validated_input['errors']
+            'error': ','.join(validated_input['errors'])
         }
 
     if 'validated_input' in validated_input:
@@ -138,7 +138,7 @@ def handler(event):
 
 
 if __name__ == '__main__':
-    wait_for_service(url='http://127.0.0.1:5000/api/v1/model')
+    wait_for_service(url=f'{BASE_URI}/model')
     logger.log('Oobabooga API is ready', 'INFO')
     logger.log('Starting RunPod Serverless...', 'INFO')
     runpod.serverless.start(
