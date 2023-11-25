@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 
-MODEL="TheBloke/Pygmalion-2-13B-GPTQ"
+#MODEL="TheBloke/Pygmalion-2-13B-GPTQ"
+MODEL=$INFERENCE_MODEL
 
 echo "Worker Initiated"
 
@@ -13,6 +14,7 @@ source /workspace/venv/bin/activate
 mkdir -p /workspace/logs
 nohup python3 server.py \
   --listen \
+  --nowebui \
   --api \
   --loader transformers \
   --model ${MODEL} \

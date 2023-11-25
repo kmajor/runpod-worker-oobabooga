@@ -11,19 +11,19 @@ from schemas.chat import CHAT_SCHEMA
 from schemas.generate import GENERATE_SCHEMA
 from schemas.token_count import TOKEN_COUNT_SCHEMA
 from schemas.model import MODEL_SCHEMA
+from schemas.chat_completions import CHAT_COMPLETIONS_SCHEMA
 
-BASE_URL = 'http://127.0.0.1:5000/api/v1'
-RAILS_ENDPOINT = 'https://live-enormous-trout.ngrok-free.app:3000/api/v1/update_pending_chat_request'  # Replace with your Rails endpoint
+BASE_URL = 'http://127.0.0.1:5000/v1'
 TIMEOUT = 600
 
 VALIDATION_SCHEMAS = {
     'chat': CHAT_SCHEMA,
     'generate': GENERATE_SCHEMA,
-    'token-count': TOKEN_COUNT_SCHEMA
+    'token-count': TOKEN_COUNT_SCHEMA,
+    'chat/completions': CHAT_COMPLETIONS_SCHEMA
 }
 
 # Fetch the authentication token from the environment variable
-rails_auth_token = os.environ.get('RAILS_AUTH_TOKEN', '4YxyVZxgeYePN9M4aQxZE68DPGw25NBwCZyWN6RWkSddizWWj9dB4UTky5soB8uhwH4d3modyqbZergPqaMcAULEM4R6DPCeExmdfigSECZ6rfSHCxCJd9kYMsyLT7kd')
 
 session = requests.Session()
 retries = Retry(total=10, backoff_factor=0.1, status_forcelist=[502, 503, 504])
@@ -110,20 +110,21 @@ def transform_payload(response):
 
 # Update the send_post_request to include the callback
 def send_post_request(endpoint, payload):
-    logger.log(f'Sending POST request to endpoint: {endpoint}', 'INFO')
+    logger.log(f"Sending POST request to endpoint: {endpoint}", 'INFO')
     response = session.post(
         url=f'{BASE_URL}/{endpoint}',
         json=payload,
         timeout=TIMEOUT
     )
 
-    # Uncomment the next line to simulate a failed scenario with invalid JSON
-    #response._content = b"Invalid JSON"
-
-    transformed_payload = transform_payload(response)  # Call the callback function with message_uid
-    #logger.log(f"completed rails callback", 'INFO')
-
-    return transformed_payload
+    try:
+        # Parse JSON response and return as a dictionary
+        response_data = response.json()
+        return response_data
+    except json.JSONDecodeError:
+        # Handle case where response is not in JSON format
+        logger.log(f'Invalid JSON response: {response.text}', 'ERROR')
+        return {'error': 'Invalid JSON response'}
 
 def validate_api(event):
     logger.log('Validating API...', 'INFO')
@@ -140,9 +141,16 @@ def validate_api(event):
             'errors': '"api" must be a dictionary containing "method" and "endpoint"'
         }
 
-    api['endpoint'] = api['endpoint'].lstrip('/')
+    api['endpoint'] = api['endpoint'].strip('/')
+    # logger.log('KEVIN the endpoint is')
+    # logger.log(api)
+
+    #KEVIN this is hack because we can't get the endpoint to validate
+    #I suspect to the the validator not treating slashes properly
+    #return {'success': True, 'validated_input': api}
 
     return validate(api, API_SCHEMA)
+
 
 
 def validate_payload(event):
@@ -160,6 +168,9 @@ def validate_payload(event):
         validated_input = validate(payload, TOKEN_COUNT_SCHEMA)
     elif endpoint == 'model' and method == 'POST':
         validated_input = validate(payload, MODEL_SCHEMA)
+    elif endpoint == 'chat/completions':  # Add this condition for 'chat/completions'
+        validated_input = validate(payload, CHAT_COMPLETIONS_SCHEMA)  # Assuming such a schema exists
+
 
     return endpoint, event['input']['api']['method'], validated_input
 
@@ -169,38 +180,37 @@ def validate_payload(event):
 def handler(event):
     logger.log('Handling event...', 'INFO')
     if 'heartbeat' in event['input'] and event['input']['heartbeat'] == True:
-        print('Heartbeat received')
         return {'status': 'ok'}
+
     validated_api = validate_api(event)
     if 'errors' in validated_api:
         return {'error': validated_api['errors']}
+
     endpoint, method, validated_input = validate_payload(event)
     if 'errors' in validated_input:
         return {'error': validated_input['errors']}
-    if 'validated_input' in validated_input:
-        payload = validated_input['validated_input']
-    else:
-        payload = {}
-    #message_uid = event['input'].get('message_uid', 'N/A')
+
+    payload = validated_input.get('validated_input', {})
     try:
         logger.log(f'Sending {method} request to: {endpoint}', 'INFO')
         if method == 'GET':
-            response = send_post_request(endpoint, payload)
+            response_data = send_get_request(endpoint)
         elif method == 'POST':
-            response = send_post_request(endpoint, payload)
-        #pretty_response = json.dumps(response.json(), indent=4)
-        #logger.log(f"Pretty Response: \n{pretty_response}", 'INFO')
+            response_data = send_post_request(endpoint, payload)
+
+        if isinstance(response_data, dict):
+            return response_data
+        else:
+            return {'error': 'Invalid response format'}
     except Exception as e:
         logger.log(f'Error occurred: {str(e)}', 'ERROR')
         return {'error': str(e)}
 
-    return response
-    #return json.dumps(response)  # Convert the Python dictionary to a JSON-formatted string
 
 if __name__ == '__main__':
     while True:  # Keep running indefinitely
         try:
-            wait_for_service(url='http://127.0.0.1:5000/api/v1/model')
+            wait_for_service(url='http://127.0.0.1:5000/v1/models')
             logger.log('Oobabooga API is ready', 'INFO')
             logger.log('Starting RunPod Serverless...', 'INFO')
             runpod.serverless.start(
@@ -210,4 +220,3 @@ if __name__ == '__main__':
             )
         except Exception as e:
             logger.log(f"An error occurred: {str(e)}. Restarting...", 'ERROR')
-            time.sleep(5)  # Sleep for 5 seconds before restarting

@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 
-MODEL="pygmalion-2-7b.Q4_K_M.gguf"
+# Assigning the environment variable value to MODEL
+MODEL=$INFERENCE_MODEL
 
 echo "Worker Initiated"
 
@@ -11,6 +12,7 @@ mkdir -p /workspace/logs
 nohup python3 server.py \
   --listen \
   --api \
+  --nowebui \
   --cpu \
   --loader ctransformers \
   --model ${MODEL} \

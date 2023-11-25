@@ -14,4 +14,8 @@ fi
 # Build the Docker image using the development Docker Compose file
 docker build . -f Dockerfile.StandaloneCpu -t runpod-oobabooga-cpu
 
-docker run --network babylon_dev_network -v /Users/weekev/work/runpod/runpod-worker-oobabooga/rp_handler.py:/rp_handler.py -p 5001:5000 runpod-oobabooga-cpu
+# Run the Docker container with a custom name
+docker run --name runpod-oobabooga-cpu --network babylon_dev_network -v /Users/weekev/work/runpod/runpod-worker-oobabooga/rp_handler.py:/rp_handler.py -p 5000:5000 runpod-oobabooga-cpu
+
+
+#docker run --name runpod-oobabooga-cpu --network babylon_dev_network -v /Users/weekev/work/runpod/runpod-worker-oobabooga/: -p 5000:5000 runpod-oobabooga-cpu
