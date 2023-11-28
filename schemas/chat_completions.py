@@ -13,5 +13,10 @@ CHAT_COMPLETIONS_SCHEMA = {
             isinstance(message['content'], str)
             for message in messages
         )
-    }
+    },
+    'character': {
+        'type': str,
+        'required': False,
+        'default': 'Example'
+    },
 }
