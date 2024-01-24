@@ -12,7 +12,7 @@ rm -rf /workspace/venv
 
 echo "Cloning Oobabooga Text Generation Web UI repo to /workspace"
 cd /workspace
-git clone --depth=1 https://github.com/oobabooga/text-generation-webui.git
+git clone https://github.com/oobabooga/text-generation-webui.git
 cd text-generation-webui
 git checkout ${COMMIT}
 
