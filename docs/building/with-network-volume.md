@@ -11,7 +11,24 @@ inside the Docker image.
 4. Select the RunPod Pytorch 2.1 Template.
 5. Deploy the GPU Cloud pod.
 6. Once the pod is up, open a Terminal and install the required
-   dependencies:
+   dependencies. This can either be done by using the installation
+   script, or manually.
+
+## Automatic Installation Script
+
+You can run this automatic installation script which will
+automatically install all of the dependencies that get installed
+manually below, and then you don't need to follow any of the
+manual instructions.
+
+```bash
+wget https://raw.githubusercontent.com/ashleykleynhans/runpod-worker-oobabooga/main/scripts/install.sh
+chmod +x install.sh
+./install.sh
+```
+
+## Manual Installation
+
 ```bash
 cd /workspace
 git clone https://github.com/oobabooga/text-generation-webui.git
@@ -26,6 +43,7 @@ bash -c 'for req in extensions/*/requirements.txt ; do pip3 install -r "$req" ; 
 mkdir -p repositories
 cd repositories
 git clone https://github.com/turboderp/exllama
+pip3 install -r exllama/requirements.txt
 ```
 7. Install the Serverless dependencies:
 ```bash
