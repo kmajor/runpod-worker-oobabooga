@@ -25,7 +25,8 @@ if __name__ == '__main__':
                 "endpoint": "/chat"
             },
             "payload": {
-                "user_input": "Please give me a step-by-step guide on how to plant a tree in my backyard."
+                "user_input": "Please give me a step-by-step guide on how to plant a tree in my backyard.",
+                "max_new_tokens": 250
             }
         }
     }
