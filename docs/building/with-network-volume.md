@@ -19,7 +19,7 @@ cd text-generation-webui
 git checkout 2af7e382b121f2eae16dd1f7ace621d31028b319
 python3 -m venv /workspace/venv
 source /workspace/venv/bin/activate
-pip3 install --no-cache-dir torch==2.1.0 torchvision torchaudio --index-url https://download.pytorch.org/whl/cu121
+pip3 install --no-cache-dir torch==2.1.2 torchvision torchaudio --index-url https://download.pytorch.org/whl/cu121
 pip3 install --no-cache-dir xformers
 pip3 install -r requirements.txt
 bash -c 'for req in extensions/*/requirements.txt ; do pip3 install -r "$req" ; done'

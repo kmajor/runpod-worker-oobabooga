@@ -25,7 +25,7 @@ WORKDIR /workspace
 RUN git clone https://github.com/oobabooga/text-generation-webui && \
     cd text-generation-webui && \
     git checkout ${OOBABOOGA_COMMIT} && \
-    pip3 install --no-cache-dir torch==2.1.0 torchvision torchaudio --index-url https://download.pytorch.org/whl/cu121 && \
+    pip3 install --no-cache-dir torch==2.1.2 torchvision torchaudio --index-url https://download.pytorch.org/whl/cu121 && \
     pip3 install --no-cache-dir xformers && \
     pip3 install -r requirements.txt && \
     bash -c 'for req in extensions/*/requirements.txt ; do pip3 install -r "$req" ; done' && \
