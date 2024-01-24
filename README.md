@@ -7,8 +7,8 @@ LLM text generation AI tasks.
 
 ## Model
 
-The worker uses the [TheBloke/Synthia-70B-v1.1-GPTQ](
-https://huggingface.co/TheBloke/TheBloke/Synthia-70B-v1.1-GPTQ)
+The worker uses the [TheBloke/Synthia-34B-v1.2-GPTQ](
+https://huggingface.co/TheBloke/TheBloke/Synthia-34B-v1.2-GPTQ)
 model by [TheBloke](https://huggingface.co/TheBloke).  Feel free to fork
 the repo and switch it to an alternate model.
 
