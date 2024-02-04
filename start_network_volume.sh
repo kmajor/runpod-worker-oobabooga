@@ -21,6 +21,7 @@ if [ -d "/runpod-volume/text-generation-webui/models/${MODEL}" ]; then
   mkdir -p /runpod-volume/logs
   nohup python3 server.py \
     --listen \
+    --nowebui \
     --api \
     --model ${MODEL} \
     --loader exllama \

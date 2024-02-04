@@ -15,6 +15,7 @@ if [ -d "/workspace/text-generation-webui/models/${MODEL}" ]; then
   nohup python3 server.py \
     --listen \
     --api \
+    --nowebui \
     --loader ExLlama \
     --model ${MODEL} \
     --listen-port 3000 \
